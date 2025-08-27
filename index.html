@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Simulador com Imagens Locais</title>
+  <title>Simulador com seleção de carrinho e pista</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,21 +18,24 @@
       color: #00796b;
     }
 
-    .input-group {
+    .input-group, .select-group {
       margin: 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     label {
       font-weight: 600;
-      margin-right: 10px;
+      min-width: 130px;
     }
 
-    input {
+    input, select {
       padding: 8px;
       border-radius: 5px;
       border: 1px solid #00796b;
-      width: 150px;
       font-size: 1rem;
+      min-width: 180px;
     }
 
     button {
@@ -56,36 +59,36 @@
       font-size: 1.5rem;
       color: #004d40;
       font-weight: 700;
+      min-height: 36px;
     }
 
-    /* Estrada com imagem local */
     .road {
-    position: relative;
-    margin-top: 50px;
-    width: 80vw;
-    max-width: 900px;
-    height: 150px; /* maior que antes */
-    background-image: url('imagens/estrada.png');
-    background-size: auto 100%;
-    background-repeat: repeat-x;
-    background-position: bottom;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      position: relative;
+      margin-top: 50px;
+      width: 80vw;
+      max-width: 900px;
+      height: 150px;
+      background-image: url('imagens/pista1.png');
+      background-size: auto 100%;
+      background-repeat: repeat-x;
+      background-position: bottom;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     }
 
     .car {
-    position: absolute;
-    top: 60px; /* ajuste pra alinhar com estrada */
-    left: 0;
-    width: 120px; /* maior */
-    height: 80px; /* maior */
-    background-image: url('imagens/carro.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    user-select: none;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 120px;
+      height: 80px;
+      background-image: url('imagens/carro1.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      user-select: none;
+      pointer-events: none;
     }
-
   </style>
 </head>
 <body>
@@ -94,12 +97,30 @@
 
   <div class="input-group">
     <label for="distancia">Distância (km):</label>
-    <input type="number" id="distancia" step="0.01" min="0" />
+    <input type="number" id="distancia" step="0.01" min="0" placeholder="Ex: 100" />
   </div>
 
   <div class="input-group">
     <label for="tempo">Tempo (horas):</label>
-    <input type="number" id="tempo" step="0.01" min="0" />
+    <input type="number" id="tempo" step="0.01" min="0" placeholder="Ex: 2" />
+  </div>
+
+  <div class="select-group">
+    <label for="select-carro">Escolha o carrinho:</label>
+    <select id="select-carro" onchange="trocarCarro()">
+      <option value="imagens/carro1.png">Ferrari</option>
+      <option value="imagens/carro2.png">Uno Mille</option>
+      <option value="imagens/carro3.png">Carrinho Verde</option>
+    </select>
+  </div>
+
+  <div class="select-group">
+    <label for="select-pista">Escolha a pista:</label>
+    <select id="select-pista" onchange="trocarPista()">
+      <option value="imagens/pista1.png">Pista de Asfalto</option>
+      <option value="imagens/pista2.png">Pista de Terra</option>
+      <option value="imagens/pista3.png">Pista Noturna</option>
+    </select>
   </div>
 
   <button onclick="calcularVelocidade()">Calcular e Animar</button>
@@ -112,7 +133,20 @@
 
   <script>
     const car = document.getElementById('car');
+    const road = document.querySelector('.road');
     let animationId;
+
+    function trocarCarro() {
+      const selectCarro = document.getElementById('select-carro');
+      const imgCarro = selectCarro.value;
+      car.style.backgroundImage = `url('${imgCarro}')`;
+    }
+
+    function trocarPista() {
+      const selectPista = document.getElementById('select-pista');
+      const imgPista = selectPista.value;
+      road.style.backgroundImage = `url('${imgPista}')`;
+    }
 
     function calcularVelocidade() {
       const distancia = parseFloat(document.getElementById('distancia').value);
@@ -132,7 +166,6 @@
     function animarCarro(velocidade) {
       if(animationId) cancelAnimationFrame(animationId);
 
-      const road = document.querySelector('.road');
       const roadWidth = road.clientWidth;
       const carWidth = car.clientWidth;
 
@@ -160,6 +193,10 @@
 
       animationId = requestAnimationFrame(step);
     }
+
+    // Inicializa com as imagens padrão
+    trocarCarro();
+    trocarPista();
   </script>
 
 </body>
