@@ -65,9 +65,9 @@
     .road {
       position: relative;
       margin-top: 50px;
-      width: 80vw;
-      max-width: 900px;
-      height: 150px;
+      width: 90vw;       /* ocupa quase toda a tela */
+      max-width: 1200px; /* pista mais larga */
+      height: 250px;     /* pista mais alta */
       background-image: url('imagens/pista1.png');
       background-size: auto 100%;
       background-repeat: repeat-x;
@@ -79,16 +79,17 @@
 
     .car {
       position: absolute;
-      top: 60px;
+      top: 100px;         /* ajusta a posição vertical dentro da pista maior */
       left: 0;
-      width: 120px;
-      height: 80px;
+      width: 200px;       /* aumenta largura do carro */
+      height: 130px;      /* aumenta altura do carro */
       background-image: url('imagens/carro1.png');
       background-size: contain;
       background-repeat: no-repeat;
       user-select: none;
       pointer-events: none;
     }
+
   </style>
 </head>
 <body>
